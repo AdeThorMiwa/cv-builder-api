@@ -1,0 +1,276 @@
+<style>
+    #template-box .template-container {
+        width: 100%;
+    }
+
+    #template-box header {
+        width: 100%;
+        background-color: #212121;
+        padding: 16px;
+    }
+
+    #template-box header h1 {
+        font-size: 32px;
+        font-weight: 900;
+        color: #fff;
+        margin: 0
+    }
+
+    #template-box header h3 {
+        color: #fff;
+        font-size: 20px;
+    }
+
+    #template-box main {
+        background-color: #fff;
+        display: flex;
+        flex-direction: row-reverse;
+    }
+
+    #template-box aside {
+        min-width: 30%;
+        flex: 1;
+        background-color: #F4F4F4;
+        box-sizing: border-box;
+        padding: 16px;
+    }
+
+    #template-box content {
+        flex: 2;
+        padding: 16px;
+    }
+
+    #template-box aside h3 {
+        font-weight: bold;
+        border-bottom: 1px solid #dfdede;
+        padding-bottom: 12px 0;
+    }
+
+    #template-box aside #personal-wrapper>div h5 {
+        font-weight: bold;
+    }
+
+    #template-box aside #personal-wrapper>div>div {
+        margin-bottom: 8px;
+    }
+
+    #template-box aside #skill-wrapper>div,
+    #template-box aside #language-wrapper>div {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #template-box aside #skill-wrapper>div>span,
+    #template-box aside #language-wrapper>div>span {
+        font-size: 15px;
+    }
+
+    #template-box aside #skill-wrapper>div>div,
+    #template-box aside #language-wrapper>div>div {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    #template-box aside #skill-wrapper>div>div span,
+    #template-box aside #language-wrapper>div>div span {
+        width: 12px;
+        height: 12px;
+        background-color: #212121;
+        border-radius: 50%;
+        margin: 4px;
+    }
+
+    #template-box content section>h3 {
+        font-weight: bold;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #dfdede;
+    }
+
+    #template-box content .section-block>div>div {
+        display: flex;
+    }
+
+    #template-box content .section-block>div>div span {
+        font-weight: bold;
+        margin-right: 16px;
+    }
+
+    #template-box content .section-block>div>div>div h4 {
+        font-weight: bold;
+        margin: 0
+    }
+
+    #template-box content .section-block>div>div>div h5 {
+        font-style: italic;
+    }
+
+    #template-box content .section-block>div>div>div ul {
+        padding: 0
+    }
+
+    #template-box content .section-block>div>div>div ul li {
+        font-size: 14px;
+    }
+</style>
+<div class="template-container">
+    <header>
+        <h1>John Doe</h1>
+        <h3>Sales Representative</h3>
+    </header>
+    <main>
+        <aside>
+            <h3>Personal Info</h3>
+            <div id="personal-wrapper">
+                <div>
+                    <h5>Phone</h5>
+                    <div>212-555-666 66</div>
+                </div>
+                <div>
+                    <h5>Email</h5>
+                    <div>adethormiwa@gmail.com</div>
+                </div>
+                <div>
+                    <h5>LinkedIn</h5>
+                    <div>linkedin.co/adethiera</div>
+                </div>
+            </div>
+            <h3>Skills</h3>
+            <div id="skill-wrapper">
+                <div>
+                    <span>Lead Qualification & Prospecting</span>
+                    <div>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+                <div>
+                    <span>Salesforce & Hubsport CRM</span>
+                    <div>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+                <div>
+                    <span>Optimizing MRR</span>
+                    <div>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+                <div>
+                    <span>Contract Negotiation</span>
+                    <div>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+            <h3>Languages</h3>
+            <div id="language-wrapper">
+                <div>
+                    <span>English</span>
+                    <div>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+                <div>
+                    <span>Spanish</span>
+                    <div>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <content>
+            <section>
+                <p>
+                    Laborum aute ea nulla excepteur adipisicing culpa cillum sit
+                    veniam quis id labore. Enim veniam mollit nostrud cupidatat
+                    pariatur voluptate. Proident excepteur minim Lorem et esse
+                    irure enim et enim cupidatat duis est. Nulla dolore cillum
+                    ad id. Velit magna excepteur ex mollit adipisicing aliqua
+                    elit veniam culpa proident magna aliquip aute. Sunt ullamco
+                    irure occaecat aute.
+                </p>
+            </section>
+            <section class="section-block">
+                <h3>Experience</h3>
+                <div>
+                    <div>
+                        <span>2018-09 - <br /> Present</span>
+                        <div>
+                            <h4>Senior Representative Sales</h4>
+                            <h5>Mca kadf Industiry, Brooklyn, NY</h5>
+                            <div>
+                                <ul>
+                                    <li>Laborum aute ea nulla excepteur adipisicing culpa cillum sit</li>
+                                    <li>Laborum aute ea nulla excepteur adipisicing culpa cillum sit</li>
+                                    <li>Laborum aute ea nulla excepteur adipisicing culpa cillum sit</li>
+                                    <li>Laborum aute ea nulla excepteur adipisicing culpa cillum sit</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <span>2016-09 - <br /> 2018-08</span>
+                        <div>
+                            <h4>Senior Representative Sales</h4>
+                            <h5>Mca kadf Industiry, Brooklyn, NY</h5>
+                            <div>
+                                <ul>
+                                    <li>Laborum aute ea nulla excepteur adipisicing culpa cillum sit</li>
+                                    <li>Laborum aute ea nulla excepteur adipisicing culpa cillum sit</li>
+                                    <li>Laborum aute ea nulla excepteur adipisicing culpa cillum sit</li>
+                                    <li>Laborum aute ea nulla excepteur adipisicing culpa cillum sit</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="section-block">
+                <h3>Education</h3>
+                <div>
+                    <div>
+                        <span>2016</span>
+                        <div>
+                            <h4>Bsc in Marketing, Majo in Computer Science</h4>
+                            <p>elit veniam culpa proident magna aliquip aute. Sunt ullamco</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="section-block">
+                <h3>Certificates</h3>
+                <div>
+                    <div>
+                        <span>2016-12</span>
+                        <div>
+                            <h4>Inside Sales Professional</h4>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </content>
+    </main>
+</div>
