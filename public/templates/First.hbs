@@ -1,4 +1,15 @@
-<style>
+<style media="all">
+    #template-box h1,
+    #template-box h2,
+    #template-box h3,
+    #template-box h4,
+    #template-box h5,
+    #template-box p,
+    #template-box span,
+    #template-box li {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }
+
     #template-box {
         width: 100%;
     }
@@ -23,19 +34,27 @@
 
     #template-box main {
         background-color: #fff;
+        display: -webkit-box;
+        display: -webkit-flex;
         display: flex;
         flex-direction: row-reverse;
+        -webkit-flex-direction: row-reverse;
     }
 
     #template-box aside {
         min-width: 30%;
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
         flex: 1;
         background-color: #F4F4F4;
         box-sizing: border-box;
+        -webkit-box-sizing: border-box;
         padding: 16px;
     }
 
     #template-box content {
+        -webkit-box-flex: 2;
+        -webkit-flex: 2;
         flex: 2;
         padding: 16px;
     }
@@ -54,30 +73,47 @@
         margin-bottom: 8px;
     }
 
-    #template-box aside #skill-wrapper>div,
-    #template-box aside #language-wrapper>div {
+    #template-box aside #skill-wrapper>div {
+        display: -webkit-box;
+        display: -webkit-flex;
         display: flex;
         flex-direction: column;
+        -webkit-flex-direction: column;
     }
 
-    #template-box aside #skill-wrapper>div>span,
-    #template-box aside #language-wrapper>div>span {
+    #template-box aside #skill-wrapper>div>span {
         font-size: 15px;
     }
 
-    #template-box aside #skill-wrapper>div>div,
-    #template-box aside #language-wrapper>div>div {
+    #template-box aside #skill-wrapper>div>div {
+        display: -webkit-box;
+        display: -webkit-flex;
         display: flex;
         justify-content: flex-end;
+        -webkit-box-pack: end;
+        -webkit-justify-content: flex-end;
     }
 
-    #template-box aside #skill-wrapper>div>div span,
-    #template-box aside #language-wrapper>div>div span {
+    #template-box aside #skill-wrapper>div>div span {
         width: 12px;
         height: 12px;
-        background-color: #212121;
+        background-color: #d8d4d4;
         border-radius: 50%;
         margin: 4px;
+    }
+
+    .active {
+        background-color: #212121 !important;
+    }
+
+    #template-box aside .simple-wrapper ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    #template-box aside .simple-wrapper ul li {
+        margin: 8px;
     }
 
     #template-box content section>h3 {
@@ -88,6 +124,8 @@
 
     #template-box content .section-block>div>div {
         display: flex;
+        display: -webkit-box;
+        display: -webkit-flex;
     }
 
     #template-box content .section-block>div>div span {
@@ -97,7 +135,8 @@
 
     #template-box content .section-block>div>div>div h4 {
         font-weight: bold;
-        margin: 0
+        margin: 0;
+        text-transform: capitalize;
     }
 
     #template-box content .section-block>div>div>div h5 {
@@ -123,154 +162,106 @@
             <div id="personal-wrapper">
                 <div>
                     <h5>Phone</h5>
-                    <div>212-555-666 66</div>
+                    <div>{{ useDefaultIfNoValue personal.phone "(+234) 212-555-666"}}</div>
                 </div>
                 <div>
                     <h5>Email</h5>
-                    <div>adethormiwa@gmail.com</div>
+                    <div>{{ useDefaultIfNoValue personal.email "johnDoe@fakemail.com"}}</div>
                 </div>
+                {{#each personal.socialLinks }}
                 <div>
-                    <h5>LinkedIn</h5>
-                    <div>linkedin.co/adethiera</div>
+                    <h5>{{this.website}}</h5>
+                    <div>{{this.link}}</div>
                 </div>
+                {{/each}}
             </div>
             <h3>Skills</h3>
             <div id="skill-wrapper">
+                {{#each (useDefaultIfNoArrayValue skills "skills") }}
                 <div>
-                    <span>Lead Qualification & Prospecting</span>
+                    <span>{{this.title}}</span>
                     <div>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                        <span class="{{#if (valueGreaterThanOrEquals this.rating 1)}} active {{/if}}"></span>
+                        <span class="{{#if (valueGreaterThanOrEquals this.rating 2)}} active {{/if}}"></span>
+                        <span class="{{#if (valueGreaterThanOrEquals this.rating 3)}} active {{/if}}"></span>
+                        <span class="{{#if (valueGreaterThanOrEquals this.rating 4)}} active {{/if}}"></span>
+                        <span class="{{#if (valueGreaterThanOrEquals this.rating 5)}} active {{/if}}"></span>
                     </div>
                 </div>
-                <div>
-                    <span>Salesforce & Hubsport CRM</span>
-                    <div>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                </div>
-                <div>
-                    <span>Optimizing MRR</span>
-                    <div>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                </div>
-                <div>
-                    <span>Contract Negotiation</span>
-                    <div>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                </div>
+                {{/each }}
             </div>
+            {{#if others.languages}}
             <h3>Languages</h3>
-            <div id="language-wrapper">
-                <div>
-                    <span>English</span>
-                    <div>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                </div>
-                <div>
-                    <span>Spanish</span>
-                    <div>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                </div>
+            <div class="simple-wrapper">
+                {{{others.languages}}}
             </div>
+            {{/if}}
+            {{#if others.interests}}
+            <h3>Interest</h3>
+            <div class="simple-wrapper">
+                {{{others.interests}}}
+            </div>
+            {{/if}}
         </aside>
         <content>
             <section>
                 <p>
-                    Laborum aute ea nulla excepteur adipisicing culpa cillum sit
+                    {{{ useDefaultIfNoValue summary "Laborum aute ea nulla excepteur adipisicing culpa cillum
+                    sit
                     veniam quis id labore. Enim veniam mollit nostrud cupidatat
                     pariatur voluptate. Proident excepteur minim Lorem et esse
                     irure enim et enim cupidatat duis est. Nulla dolore cillum
                     ad id. Velit magna excepteur ex mollit adipisicing aliqua
                     elit veniam culpa proident magna aliquip aute. Sunt ullamco
-                    irure occaecat aute.
+                    irure occaecat aute."}}}
                 </p>
             </section>
             <section class="section-block">
                 <h3>Experience</h3>
                 <div>
+                    {{#each (useDefaultIfNoArrayValue experience "experience") }}
                     <div>
-                        <span>2018-09 - <br /> Present</span>
+                        <span>{{formatDate this.startDate "YYYY-MM" }} - <br /> {{ formatDate this.endDate "YYYY-MM"
+                            "Present"}}</span>
                         <div>
-                            <h4>Senior Representative Sales</h4>
-                            <h5>Mca kadf Industiry, Brooklyn, NY</h5>
+                            <h4>{{this.title}}</h4>
+                            <h5>{{this.employer}}, {{this.city}}, {{this.state}}.</h5>
                             <div>
                                 <ul>
-                                    <li>Laborum aute ea nulla excepteur adipisicing culpa cillum sit</li>
-                                    <li>Laborum aute ea nulla excepteur adipisicing culpa cillum sit</li>
-                                    <li>Laborum aute ea nulla excepteur adipisicing culpa cillum sit</li>
-                                    <li>Laborum aute ea nulla excepteur adipisicing culpa cillum sit</li>
+                                    {{#each this.description }}
+                                    <li>{{this}}</li>
+                                    {{/each}}
                                 </ul>
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <span>2016-09 - <br /> 2018-08</span>
-                        <div>
-                            <h4>Senior Representative Sales</h4>
-                            <h5>Mca kadf Industiry, Brooklyn, NY</h5>
-                            <div>
-                                <ul>
-                                    <li>Laborum aute ea nulla excepteur adipisicing culpa cillum sit</li>
-                                    <li>Laborum aute ea nulla excepteur adipisicing culpa cillum sit</li>
-                                    <li>Laborum aute ea nulla excepteur adipisicing culpa cillum sit</li>
-                                    <li>Laborum aute ea nulla excepteur adipisicing culpa cillum sit</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                    {{/each}}
                 </div>
             </section>
             <section class="section-block">
                 <h3>Education</h3>
                 <div>
+                    {{#each (useDefaultIfNoArrayValue education "education") }}
                     <div>
-                        <span>2016</span>
+                        <span>{{ formatDate this.endDate "YYYY" "Current"}}</span>
                         <div>
-                            <h4>Bsc in Marketing, Majo in Computer Science</h4>
-                            <p>elit veniam culpa proident magna aliquip aute. Sunt ullamco</p>
+                            <h4>{{ underscoreToString degree}}, Major in {{fieldOfStudy}}</h4>
+                            <h5>{{this.name}}, {{this.location}}.</h5>
                         </div>
                     </div>
+                    {{/each}}
                 </div>
             </section>
+            {{#if others.certifications }}
             <section class="section-block">
                 <h3>Certificates</h3>
                 <div>
                     <div>
-                        <span>2016-12</span>
-                        <div>
-                            <h4>Inside Sales Professional</h4>
-                        </div>
+                        {{{others.certifications}}}
                     </div>
                 </div>
             </section>
+            {{/if}}
         </content>
     </main>
 </div>
