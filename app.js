@@ -22,6 +22,26 @@ app.use(cors())
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
+app.use(function(req, res, next) {
+  // res.setHeader('Access-Control-Allow-Origin', 'http://157.230.16.247');
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+  "Access-Control-Allow-Methods",
+  "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  ); // If needed
+  res.setHeader(
+  "Access-Control-Allow-Headers",
+  "x-access-token,X-Requested-With,content-type"
+  ); // If needed
+  res.setHeader("Access-Control-Allow-Credentials", true); // If needed
+
+  //intercepts OPTIONS method
+  if ("OPTIONS" === req.method) res.sendStatus(200);
+  else next();
+
+  // Pass to next layer of middleware
+  //next();
+});
 
 app.use('/', indexRouter);
 app.use('/template', templateRouter);

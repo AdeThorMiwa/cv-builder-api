@@ -13,9 +13,11 @@
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "express-fileupload": "^1.2.1",
+    "html-pdf": "^2.2.0",
+    "html-pdf-lts": "^2.2.7",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
-    "jspdf": "^2.3.0",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "phantom-html-to-pdf": "^0.6.1"
   }
 }

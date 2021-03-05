@@ -1,5 +1,5 @@
 <style>
-    #template-box .template-container {
+    #template-box {
         width: 100%;
     }
 
@@ -112,10 +112,10 @@
         font-size: 14px;
     }
 </style>
-<div class="template-container">
+<div id="template-box">
     <header>
-        <h1>John Doe</h1>
-        <h3>Sales Representative</h3>
+        <h1>{{ useDefaultIfNoValue personal.firstName "John"}} {{useDefaultIfNoValue personal.lastName "Doe"}}</h1>
+        <h3>{{ useDefaultIfNoValue personal.profession "Sales Manager"}}</h3>
     </header>
     <main>
         <aside>
