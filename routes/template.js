@@ -3,8 +3,6 @@ var router = express.Router();
 var fs = require("fs");
 var path = require("path");
 var pdf = require('html-pdf');
-var conversion = require("phantom-html-to-pdf")();
-var { moveFile } = require("./../utils/file")
 
 const rootDirectory = path.join(__dirname, "../");
 const templateDirectory = path.join(__dirname, "../public/templates")
@@ -45,6 +43,8 @@ router.get('/:name', function (req, res, next) {
             status: "fail",
             message: "Template not found!"
         })
+
+        console.log(req.protocol)
 
         res.json({
             status: "success",
