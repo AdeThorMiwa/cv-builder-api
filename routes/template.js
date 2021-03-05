@@ -15,7 +15,7 @@ router.get('/', function (req, res, next) {
             console.log('Unable to scan directory: ' + err);
             res.status(500).json(err)
         }
-
+        console.log(req.connection.encrypted ? 'https' : 'http')
         res.json({
             status: "success",
             templates: files.map(file => {
@@ -43,8 +43,6 @@ router.get('/:name', function (req, res, next) {
             status: "fail",
             message: "Template not found!"
         })
-
-        console.log(req.protocol)
 
         res.json({
             status: "success",
