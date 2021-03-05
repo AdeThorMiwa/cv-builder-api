@@ -15,15 +15,17 @@ router.get('/', function (req, res, next) {
             console.log('Unable to scan directory: ' + err);
             res.status(500).json(err)
         }
-        console.log(req.connection.encrypted ? 'https' : 'http')
+
+        console.log(req.headers['x-forwarded-proto'])
+
         res.json({
             status: "success",
             templates: files.map(file => {
                 const [name, extension] = file.split(".");
                 return {
                     name,
-                    thumbnail: `${req.protocol}://${req.headers.host}/images/${name}.png`,
-                    template: `${req.protocol}://${req.headers.host}/templates/${name}.${extension}`
+                    thumbnail: `${req.headers['x-forwarded-proto']}://${req.headers.host}/images/${name}.png`,
+                    template: `${req.headers['x-forwarded-proto']}://${req.headers.host}/templates/${name}.${extension}`
                 }
             })
         })
@@ -48,8 +50,8 @@ router.get('/:name', function (req, res, next) {
             status: "success",
             template: {
                 name: req.params.name,
-                thumbnail: `${req.protocol}://${req.headers.host}/images/${req.params.name}.png`,
-                template: `${req.protocol}://${req.headers.host}/templates/${template}`
+                thumbnail: `${req.headers['x-forwarded-proto']}://${req.headers.host}/images/${req.params.name}.png`,
+                template: `${req.headers['x-forwarded-proto']}://${req.headers.host}/templates/${template}`
             }
         })
     });
@@ -91,8 +93,8 @@ router.post("/", (req, res, next) => {
                 status: "success",
                 template: {
                     name,
-                    thumbnail: `${req.protocol}://${req.headers.host}/images/${name}.png`,
-                    template: `${req.protocol}://${req.headers.host}/templates/${name}.hbs`
+                    thumbnail: `${req.headers['x-forwarded-proto']}://${req.headers.host}/images/${name}.png`,
+                    template: `${req.headers['x-forwarded-proto']}://${req.headers.host}/templates/${name}.hbs`
                 }
             })
         })
@@ -145,7 +147,7 @@ router.post("/v1/toPdf", async (req, res, next) => {
 
         res.json({
             status: "success",
-            downloadLink: `${req.protocol}://${req.headers.host}/pdfs/${filename}`
+            downloadLink: `${req.headers['x-forwarded-proto']}://${req.headers.host}/pdfs/${filename}`
         })
     });
 });

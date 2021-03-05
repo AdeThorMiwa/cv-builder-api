@@ -12,6 +12,7 @@ var templateRouter = require('./routes/template');
 var app = express();
 
 // view engine setup
+app.enable('trust proxy');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
@@ -22,16 +23,16 @@ app.use(cors())
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   // res.setHeader('Access-Control-Allow-Origin', 'http://157.230.16.247');
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
-  "Access-Control-Allow-Methods",
-  "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
   ); // If needed
   res.setHeader(
-  "Access-Control-Allow-Headers",
-  "x-access-token,X-Requested-With,content-type"
+    "Access-Control-Allow-Headers",
+    "x-access-token,X-Requested-With,content-type"
   ); // If needed
   res.setHeader("Access-Control-Allow-Credentials", true); // If needed
 
