@@ -3,12 +3,16 @@ var router = express.Router();
 var fs = require("fs");
 var path = require("path");
 var pdf = require('html-pdf');
+var pdf_lts = require('html-pdf-lts');
+var phantom = require('phantom-html-to-pdf');
 
 const rootDirectory = path.join(__dirname, "../");
 const templateDirectory = path.join(__dirname, "../public/templates")
 const imageDirectory = path.join(__dirname, "../public/images");
 const tmpPdfDirectory = path.join(__dirname, "../public/pdfs");
 /* GET home page. */
+const env = "prod";
+
 router.get('/', function (req, res, next) {
     fs.readdir(templateDirectory, function (err, files) {
         if (err) {
@@ -16,7 +20,8 @@ router.get('/', function (req, res, next) {
             res.status(500).json(err)
         }
 
-        console.log(req.headers['x-forwarded-proto'])
+        const protocol = env === "dev" ? req.protocol : req.headers['x-forwarded-proto'];
+        console.log(protocol)
 
         res.json({
             status: "success",
@@ -24,8 +29,8 @@ router.get('/', function (req, res, next) {
                 const [name, extension] = file.split(".");
                 return {
                     name,
-                    thumbnail: `${req.headers['x-forwarded-proto']}://${req.headers.host}/images/${name}.png`,
-                    template: `${req.headers['x-forwarded-proto']}://${req.headers.host}/templates/${name}.${extension}`
+                    thumbnail: `${protocol}://${req.headers.host}/images/${name}.png`,
+                    template: `${protocol}://${req.headers.host}/templates/${name}.${extension}`
                 }
             })
         })
@@ -46,12 +51,14 @@ router.get('/:name', function (req, res, next) {
             message: "Template not found!"
         })
 
+        const protocol = env === "dev" ? req.protocol : req.headers['x-forwarded-proto'];
+
         res.json({
             status: "success",
             template: {
                 name: req.params.name,
-                thumbnail: `${req.headers['x-forwarded-proto']}://${req.headers.host}/images/${req.params.name}.png`,
-                template: `${req.headers['x-forwarded-proto']}://${req.headers.host}/templates/${template}`
+                thumbnail: `${protocol}://${req.headers.host}/images/${req.params.name}.png`,
+                template: `${protocol}://${req.headers.host}/templates/${template}`
             }
         })
     });
@@ -137,6 +144,11 @@ router.post("/v1/toPdf", async (req, res, next) => {
         message: `Invalid parameters`
     })
 
+    if (env === "not_dev") {
+        pdf_lts.create()
+        phantom.call()
+    }
+
     const filename = `download_${Date.now()}.pdf`;
     pdf.create(html, {
         format: "A4",
@@ -145,9 +157,11 @@ router.post("/v1/toPdf", async (req, res, next) => {
             return res.status(500).json({ status: "error", message: "something went wrong" })
         }
 
+        const protocol = env === "dev" ? req.protocol : req.headers['x-forwarded-proto'];
+
         res.json({
             status: "success",
-            downloadLink: `${req.headers['x-forwarded-proto']}://${req.headers.host}/pdfs/${filename}`
+            downloadLink: `${protocol}://${req.headers.host}/pdfs/${filename}`
         })
     });
 });
