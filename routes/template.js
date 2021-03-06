@@ -2,8 +2,8 @@ var express = require('express');
 var router = express.Router();
 var fs = require("fs");
 var path = require("path");
-var pdf = require('html-pdf');
-var pdf_lts = require('html-pdf-lts');
+var n_pdf = require('html-pdf');
+var pdf = require('html-pdf-lts');
 var phantom = require('phantom-html-to-pdf');
 
 const rootDirectory = path.join(__dirname, "../");
@@ -11,7 +11,7 @@ const templateDirectory = path.join(__dirname, "../public/templates")
 const imageDirectory = path.join(__dirname, "../public/images");
 const tmpPdfDirectory = path.join(__dirname, "../public/pdfs");
 /* GET home page. */
-const env = "prod";
+const env = "dev";
 
 router.get('/', function (req, res, next) {
     fs.readdir(templateDirectory, function (err, files) {
@@ -151,7 +151,7 @@ router.post("/v1/toPdf", async (req, res, next) => {
 
     const filename = `download_${Date.now()}.pdf`;
     pdf.create(html, {
-        format: "A4",
+        format: "Letter",
     }).toFile(path.join(tmpPdfDirectory, filename), (err, result) => {
         if (err) {
             return res.status(500).json({ status: "error", message: "something went wrong" })
