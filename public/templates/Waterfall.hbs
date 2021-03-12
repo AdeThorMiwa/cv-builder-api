@@ -1,0 +1,236 @@
+<head>
+    <style>
+        #template-box h1,
+        #template-box h2,
+        #template-box h3,
+        #template-box h4,
+        #template-box h5,
+        #template-box p,
+        #template-box span,
+        #template-box li,
+        #template-box div {
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            font-size: 10px;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        #template-box {
+            width: 100%;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+        }
+
+        #template-box aside {
+            background: #353A45;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            flex-direction: column;
+            -webkit-flex-direction: column;
+            color: #ffffff;
+            min-width: 30%;
+        }
+
+        #template-box aside .aside-section {
+            padding: 10px;
+        }
+
+        #template-box h1 {
+            font-size: 22px;
+            font-weight: 900;
+            color: #ffffff;
+            line-height: 30px;
+        }
+
+        #template-box h2 {
+            color: #fff;
+            line-height: 20px;
+            font-size: 12px;
+        }
+
+        #template-box aside>h3 {
+            padding: 4px 8px;
+            color: #ffffff;
+            background: #21242D
+        }
+
+        #template-box aside>.aside-section>h4 {
+            color: #ffffff;
+            font-size: 9px;
+            font-weight: bold;
+            line-height: 20px;
+        }
+
+        #template-box aside>.aside-section>h4+div {
+            font-size: 9px;
+            line-height: 20px;
+        }
+
+        #template-box aside>.aside-section .ratings {
+            width: 100%;
+            height: 5px;
+            background: #21242D;
+        }
+
+        #template-box aside>.aside-section .ratings div {
+            height: 100%;
+            background: #ffffff;
+        }
+
+        #template-box aside .aside-section ul {
+            padding: 8px;
+            list-style-position: inherit;
+            list-style-type: square;
+            margin: 0;
+        }
+
+        #template-box #content {
+            padding: 12px;
+        }
+
+        #template-box #content>p {
+            text-align: justify;
+        }
+
+        #template-box #content>h3 {
+            padding: 8px;
+            border-top: 1px solid #efefef;
+            border-bottom: 1px solid #efefef;
+            padding-left: 0px;
+            margin: 8px 0px;
+        }
+
+        #template-box #content>section>div {
+            display: flex;
+            display: -webkit-box;
+            display: -webkit-flex;
+        }
+
+        #template-box #content>section>div span {
+            font-weight: bold;
+            margin-right: 16px;
+        }
+
+        #template-box #content>section>div>div h4 {
+            font-weight: bold;
+            margin: 0;
+            text-transform: capitalize;
+        }
+
+        #template-box #content>section>div>div h5 {
+            font-style: italic;
+        }
+
+        #template-box #content>section>div>div ul {
+            padding: 0
+        }
+
+        #template-box #content>section>div>div ul li {
+            font-size: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <main id="template-box">
+        <aside>
+            <div class="aside-section">
+                <h1>
+                    {{ useDefaultIfNoValue personal.firstName "John" stripDefault}} {{useDefaultIfNoValue personal.lastName "Doe" stripDefault}}
+                </h1>
+                <h2>{{ useDefaultIfNoValue personal.profession "Sales Manager" stripDefault}}</h2>
+            </div>
+            <h3>Personal Info</h3>
+            <div class="aside-section">
+                <h4>Phone</h4>
+                <div>{{ useDefaultIfNoValue personal.phone "(+234) 212-555-666" stripDefault}}</div>
+                <h4>E-mail</h4>
+                <div>{{ useDefaultIfNoValue personal.email "johnDoe@fakemail.com" stripDefault}}</div>
+                {{#each personal.socialLinks }}
+                <h4>{{this.website}}</h4>
+                <div>{{this.link}}</div>
+                {{/each}}
+            </div>
+            <h3>Skills</h3>
+            <div class="aside-section">
+                {{#each (useDefaultIfNoArrayValue skills "skills" stripDefault) }}
+                <h4>{{this.title}}</h4>
+                <div class="ratings">
+                    <div style="width: {{ ratingsToPercent this.rating }}"></div>
+                </div>
+                {{/each}}
+            </div>
+            {{#if others.languages}}
+            <h3>Languages</h3>
+            <div class="aside-section">
+                {{{others.languages}}}
+            </div>
+            {{/if }}
+            {{#if others.interests}}
+            <h3>Interest</h3>
+            <div class="aside-section">
+                {{{others.interests}}}
+            </div>
+            {{/if}}
+        </aside>
+        <section id="content">
+            <p>
+                {{{ useDefaultIfNoValue summary "Laborum aute ea nulla excepteur adipisicing culpa cillum
+                sit
+                veniam quis id labore. Enim veniam mollit nostrud cupidatat
+                pariatur voluptate. Proident excepteur minim Lorem et esse
+                irure enim et enim cupidatat duis est. Nulla dolore cillum
+                ad id. Velit magna excepteur ex mollit adipisicing aliqua
+                elit veniam culpa proident magna aliquip aute. Sunt ullamco
+                irure occaecat aute." stripDefault}}}
+            </p>
+            <h3>
+                Experience
+            </h3>
+            <section>
+                {{#each (useDefaultIfNoArrayValue experience "experience" stripDefault) }}
+                <div>
+                    <span>{{formatDate this.startDate "YYYY-MM" }} - <br /> {{ formatDate this.endDate "YYYY-MM"
+                        "Present"}}</span>
+                    <div>
+                        <h4>{{this.title}}</h4>
+                        <h5>{{this.employer}}, {{this.city}}, {{this.state}}.</h5>
+                        <div>
+                            <ul>
+                                {{#each this.description }}
+                                <li>{{this}}</li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </section>
+            <h3>
+                Education
+            </h3>
+            <section>
+                {{#each (useDefaultIfNoArrayValue education "education" stripDefault) }}
+                <div>
+                    <span>{{ formatDate this.endDate "YYYY" "Current"}}</span>
+                    <div>
+                        <h4>{{ underscoreToString degree}}, Major in {{fieldOfStudy}}</h4>
+                        <h5>{{this.name}}, {{this.location}}.</h5>
+                    </div>
+                </div>
+                {{/each}}
+            </section>
+            {{#if others.certifications }}
+            <h3>Certificates</h3>
+            <section>
+                <div>
+                    {{{others.certifications}}}
+                </div>
+            </section>
+            {{/if}}
+        </section>
+    </main>
+</body>

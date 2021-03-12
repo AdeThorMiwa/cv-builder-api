@@ -163,8 +163,8 @@
 <body>
     <div id="template-box">
         <header>
-            <h1>{{ useDefaultIfNoValue personal.firstName "John"}} {{useDefaultIfNoValue personal.lastName "Doe"}}</h1>
-            <h3>{{ useDefaultIfNoValue personal.profession "Sales Manager"}}</h3>
+            <h1>{{ useDefaultIfNoValue personal.firstName "John" stripDefault }} {{useDefaultIfNoValue personal.lastName "Doe" stripDefault}}</h1>
+            <h3>{{ useDefaultIfNoValue personal.profession "Sales Manager" stripDefault}}</h3>
         </header>
         <main>
             <aside>
@@ -172,11 +172,11 @@
                 <div id="personal-wrapper">
                     <div>
                         <h5>Phone</h5>
-                        <div>{{ useDefaultIfNoValue personal.phone "(+234) 212-555-666"}}</div>
+                        <div>{{ useDefaultIfNoValue personal.phone "(+234) 212-555-666" stripDefault}}</div>
                     </div>
                     <div>
                         <h5>Email</h5>
-                        <div>{{ useDefaultIfNoValue personal.email "johnDoe@fakemail.com"}}</div>
+                        <div>{{ useDefaultIfNoValue personal.email "johnDoe@fakemail.com" stripDefault}}</div>
                     </div>
                     {{#each personal.socialLinks }}
                     <div>
@@ -187,7 +187,7 @@
                 </div>
                 <h3>Skills</h3>
                 <div id="skill-wrapper">
-                    {{#each (useDefaultIfNoArrayValue skills "skills") }}
+                    {{#each (useDefaultIfNoArrayValue skills "skills" stripDefault) }}
                     <div>
                         <span>{{this.title}}</span>
                         <div>
@@ -223,13 +223,13 @@
                         irure enim et enim cupidatat duis est. Nulla dolore cillum
                         ad id. Velit magna excepteur ex mollit adipisicing aliqua
                         elit veniam culpa proident magna aliquip aute. Sunt ullamco
-                        irure occaecat aute."}}}
+                        irure occaecat aute." stripDefault}}}
                     </p>
                 </section>
                 <section class="section-block">
                     <h3>Experience</h3>
                     <div>
-                        {{#each (useDefaultIfNoArrayValue experience "experience") }}
+                        {{#each (useDefaultIfNoArrayValue experience "experience" stripDefault) }}
                         <div>
                             <span>{{formatDate this.startDate "YYYY-MM" }} - <br /> {{ formatDate this.endDate "YYYY-MM"
                                 "Present"}}</span>
@@ -251,7 +251,7 @@
                 <section class="section-block">
                     <h3>Education</h3>
                     <div>
-                        {{#each (useDefaultIfNoArrayValue education "education") }}
+                        {{#each (useDefaultIfNoArrayValue education "education" stripDefault) }}
                         <div>
                             <span>{{ formatDate this.endDate "YYYY" "Current"}}</span>
                             <div>

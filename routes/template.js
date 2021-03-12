@@ -11,7 +11,7 @@ const templateDirectory = path.join(__dirname, "../public/templates")
 const imageDirectory = path.join(__dirname, "../public/images");
 const tmpPdfDirectory = path.join(__dirname, "../public/pdfs");
 /* GET home page. */
-const env = "dev";
+const env = "prod";
 
 router.get('/', function (req, res, next) {
     fs.readdir(templateDirectory, function (err, files) {
@@ -66,6 +66,12 @@ router.get('/:name', function (req, res, next) {
 
 router.post("/", (req, res, next) => {
     const { name } = req.body;
+
+    if (!req.files) return res.status(400).json({
+        status: "fail",
+        message: `Invalid parameters`
+    })
+
     const { thumbnail, template } = req.files;
     if (!name || !thumbnail || !template) {
         return res.status(400).json({
