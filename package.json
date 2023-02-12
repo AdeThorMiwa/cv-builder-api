@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "postinstall": "npm install -g phantomjs",
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www"
   },
