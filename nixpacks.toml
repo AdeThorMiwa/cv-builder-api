@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["bzip2"]
+nixPkgs = ["...", "bzip2"]
 
 [phases.build]
 cmds = ["bzip2 --help"]
