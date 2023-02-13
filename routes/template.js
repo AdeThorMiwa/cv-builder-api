@@ -1,116 +1,126 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 var fs = require("fs");
 var path = require("path");
-var pdf = require('html-pdf-lts');
-var phantom = require('phantom-html-to-pdf');
+var pdf = require("html-pdf-lts");
+var phantom = require("phantom-html-to-pdf");
 
-const templateDirectory = path.join(__dirname, "../public/templates")
+const templateDirectory = path.join(__dirname, "../public/templates");
 const imageDirectory = path.join(__dirname, "../public/images");
 const tmpPdfDirectory = path.join(__dirname, "../public/pdfs");
 /* GET home page. */
 const env = "prod";
 
-router.get('/', function (req, res, next) {
-    fs.readdir(templateDirectory, function (err, files) {
-        if (err) {
-            console.log('Unable to scan directory: ' + err);
-            res.status(500).json(err)
-        }
+router.get("/", function (req, res, next) {
+  fs.readdir(templateDirectory, function (err, files) {
+    if (err) {
+      console.log("Unable to scan directory: " + err);
+      res.status(500).json(err);
+    }
 
-        const protocol = env === "dev" ? req.protocol : req.headers['x-forwarded-proto'];
-        console.log(protocol)
+    const protocol =
+      env === "dev" ? req.protocol : req.headers["x-forwarded-proto"];
+    console.log(protocol);
 
-        res.json({
-            status: "success",
-            templates: files.map(file => {
-                const [name, extension] = file.split(".");
-                return {
-                    name,
-                    thumbnail: `${protocol}://${req.headers.host}/images/${name}.png`,
-                    template: `${protocol}://${req.headers.host}/templates/${name}.${extension}`
-                }
-            })
-        })
+    res.json({
+      status: "success",
+      templates: files.map((file) => {
+        const [name, extension] = file.split(".");
+        return {
+          name,
+          thumbnail: `${protocol}://${req.headers.host}/images/${name}.png`,
+          template: `${protocol}://${req.headers.host}/templates/${name}.${extension}`,
+        };
+      }),
     });
+  });
 });
 
-router.get('/:name', function (req, res, next) {
-    fs.readdir(templateDirectory, function (err, files) {
-        //handling error
-        if (err) {
-            console.log('Unable to scan directory: ' + err);
-            return res.status(500).json(err)
-        }
-        //listing all files using forEach
-        const template = files.find(file => file.split(".")[0] === req.params.name);
-        if (!template) return res.status(404).json({
-            status: "fail",
-            message: "Template not found!"
-        })
+router.get("/:name", function (req, res, next) {
+  fs.readdir(templateDirectory, function (err, files) {
+    //handling error
+    if (err) {
+      console.log("Unable to scan directory: " + err);
+      return res.status(500).json(err);
+    }
+    //listing all files using forEach
+    const template = files.find(
+      (file) => file.split(".")[0] === req.params.name
+    );
+    if (!template)
+      return res.status(404).json({
+        status: "fail",
+        message: "Template not found!",
+      });
 
-        const protocol = env === "dev" ? req.protocol : req.headers['x-forwarded-proto'];
+    const protocol =
+      env === "dev" ? req.protocol : req.headers["x-forwarded-proto"];
 
-        res.json({
-            status: "success",
-            template: {
-                name: req.params.name,
-                thumbnail: `${protocol}://${req.headers.host}/images/${req.params.name}.png`,
-                template: `${protocol}://${req.headers.host}/templates/${template}`
-            }
-        })
+    res.json({
+      status: "success",
+      template: {
+        name: req.params.name,
+        thumbnail: `${protocol}://${req.headers.host}/images/${req.params.name}.png`,
+        template: `${protocol}://${req.headers.host}/templates/${template}`,
+      },
     });
+  });
 });
 
 router.post("/", (req, res, next) => {
-    const { name } = req.body;
+  const { name } = req.body;
 
-    if (!req.files) return res.status(400).json({
+  if (!req.files)
+    return res.status(400).json({
+      status: "fail",
+      message: `Invalid parameters`,
+    });
+
+  const { thumbnail, template } = req.files;
+  if (!name || !thumbnail || !template) {
+    return res.status(400).json({
+      status: "fail",
+      message: `Invalid parameters`,
+    });
+  }
+
+  if (thumbnail.mimetype !== "image/png")
+    return res.status(400).json({
+      status: "fail",
+      message: "Thumbnail must be a png file",
+    });
+
+  if (template.mimetype !== "text/x-handlebars-template")
+    return res.status(400).json({
+      status: "fail",
+      message: "Template must be a (.hbs) or (.handlebars) file",
+    });
+
+  template.mv(path.join(templateDirectory, `${name}.hbs`), (err) => {
+    if (err)
+      return res.status(500).json({
         status: "fail",
-        message: `Invalid parameters`
-    })
+        message: "Something went wrong while uploading template",
+      });
 
-    const { thumbnail, template } = req.files;
-    if (!name || !thumbnail || !template) {
-        return res.status(400).json({
-            status: "fail",
-            message: `Invalid parameters`
-        })
-    }
+    thumbnail.mv(path.join(imageDirectory, `${name}.png`), (err) => {
+      if (err)
+        return res.status(500).json({
+          status: "fail",
+          message: "Something went wrong while uploading thumbnail",
+        });
 
-    if (thumbnail.mimetype !== "image/png") return res.status(400).json({
-        status: "fail",
-        message: "Thumbnail must be a png file"
-    })
-
-    if (template.mimetype !== 'text/x-handlebars-template') return res.status(400).json({
-        status: "fail",
-        message: "Template must be a (.hbs) or (.handlebars) file"
-    })
-
-    template.mv(path.join(templateDirectory, `${name}.hbs`), (err) => {
-        if (err) return res.status(500).json({
-            status: "fail",
-            message: "Something went wrong while uploading template"
-        })
-
-        thumbnail.mv(path.join(imageDirectory, `${name}.png`), (err) => {
-            if (err) return res.status(500).json({
-                status: "fail",
-                message: "Something went wrong while uploading thumbnail"
-            })
-
-            res.json({
-                status: "success",
-                template: {
-                    name,
-                    thumbnail: `${req.headers['x-forwarded-proto']}://${req.headers.host}/images/${name}.png`,
-                    template: `${req.headers['x-forwarded-proto']}://${req.headers.host}/templates/${name}.hbs`
-                }
-            })
-        })
-    })
-})
+      res.json({
+        status: "success",
+        template: {
+          name,
+          thumbnail: `${req.headers["x-forwarded-proto"]}://${req.headers.host}/images/${name}.png`,
+          template: `${req.headers["x-forwarded-proto"]}://${req.headers.host}/templates/${name}.hbs`,
+        },
+      });
+    });
+  });
+});
 
 // deprecated - was converting to png and the convert library was too heavy (12 freaggin MB)
 
@@ -142,35 +152,43 @@ router.post("/", (req, res, next) => {
 // });
 
 router.post("/v1/toPdf", async (req, res, next) => {
-    const { html } = req.body;
-    if (!html || !html.trim().length) return res.status(400).json({
-        status: "fail",
-        message: `Invalid parameters`
+  const { html } = req.body;
+  if (!html || !html.trim().length)
+    return res.status(400).json({
+      status: "fail",
+      message: `Invalid parameters`,
+    });
+
+  if (env === "not_dev") {
+    pdf_lts.create();
+    phantom.call();
+  }
+
+  const filename = `download_${Date.now()}.pdf`;
+  console.log(tmpPdfDirectory, filename);
+  pdf
+    .create(html, {
+      format: "Letter",
+      phantomPath: require("phantomjs-prebuilt-that-works").path,
     })
+    .toFile(path.join(tmpPdfDirectory, filename), (err, result) => {
+      if (err) {
+        return res
+          .status(500)
+          .json({ status: "error", message: "something went wrong" });
+      }
 
-    if (env === "not_dev") {
-        pdf_lts.create()
-        phantom.call()
-    }
+      const protocol =
+        env === "dev" ? req.protocol : req.headers["x-forwarded-proto"];
 
-    const filename = `download_${Date.now()}.pdf`;
-    pdf.create(html, {
-        format: "Letter",
-    }).toFile(path.join(tmpPdfDirectory, filename), (err, result) => {
-        if (err) {
-            return res.status(500).json({ status: "error", message: "something went wrong" })
-        }
-
-        const protocol = env === "dev" ? req.protocol : req.headers['x-forwarded-proto'];
-
-        res.json({
-            status: "success",
-            downloadLink: `${protocol}://${req.headers.host}/pdfs/${filename}`
-        })
+      res.json({
+        status: "success",
+        downloadLink: `${protocol}://${req.headers.host}/pdfs/${filename}`,
+      });
     });
 });
 
-// was never an option - 
+// was never an option -
 
 // router.post("/v2/toPdf", async (req, res, next) => {
 //     const { html } = req.body;
