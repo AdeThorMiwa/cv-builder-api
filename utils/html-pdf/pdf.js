@@ -100,7 +100,10 @@ PDF.prototype.exec = function PdfExec(callback) {
   var child = childprocess.spawn(
     this.options.phantomPath,
     [].concat(this.options.phantomArgs, [this.script]),
-    this.options.childProcessOptions
+    {
+      ...(this.options.childProcessOptions || {}),
+      env: { ...process.env, OPENSSL_CONF: "/etc/ssl" },
+    }
   );
   var stderr = [];
 
