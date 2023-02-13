@@ -2,7 +2,7 @@
 nixPkgs = ["...", "bzip2"]
 
 [phases.build]
-cmds = ["bzip2 --help"]
+cmds = ["...", "bzip2 --help"]
 
 [phases.install]
-    cmds = ["npm install"]
+    cmds = ["...", "npm install"]
