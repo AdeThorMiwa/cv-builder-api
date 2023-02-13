@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "preinstall": "npm install -g phantomjs",
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www"
   },
@@ -20,7 +19,6 @@
     "jade": "~1.11.0",
     "morgan": "~1.9.1",
     "phantom-html-to-pdf": "^0.6.1",
-    "phantomjs": "^2.1.7",
-    "phantomjs-prebuilt": "^2.1.16"
+    "phantomjs": "^2.1.7"
   }
 }
