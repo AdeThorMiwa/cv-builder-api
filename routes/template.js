@@ -2,11 +2,9 @@ var express = require('express');
 var router = express.Router();
 var fs = require("fs");
 var path = require("path");
-var n_pdf = require('html-pdf');
 var pdf = require('html-pdf-lts');
 var phantom = require('phantom-html-to-pdf');
 
-const rootDirectory = path.join(__dirname, "../");
 const templateDirectory = path.join(__dirname, "../public/templates")
 const imageDirectory = path.join(__dirname, "../public/images");
 const tmpPdfDirectory = path.join(__dirname, "../public/pdfs");
