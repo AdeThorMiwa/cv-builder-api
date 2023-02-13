@@ -1,5 +1,6 @@
 [phases.setup]
 nixPkgs = ["...", "bzip2"]
+aptPkgs = ["libfontconfig"]
 
 [phases.build]
 cmds = ["...", "bzip2 --help"]

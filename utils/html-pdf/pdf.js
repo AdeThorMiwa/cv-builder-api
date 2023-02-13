@@ -151,6 +151,12 @@ PDF.prototype.exec = function PdfExec(callback) {
         error = err instanceof Error ? err : new Error(err);
       } else {
         // This is to catch the edge case of having a exit code value of 1 but having no error
+        console.log(
+          "================= error ==================",
+          code,
+          err,
+          data
+        );
         error = new Error("html-pdf: Unknown Error");
       }
 
