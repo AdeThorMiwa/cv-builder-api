@@ -178,7 +178,7 @@ PDF.prototype.exec = function PdfExec(callback) {
   child.stdout.on("data", onData);
   child.stderr.on("data", onError);
   child.on("error", function onError(err) {
-    console.log("=================== error ================", err);
+    console.log("=================== update error ================", err);
     respond(null, err);
   });
 
